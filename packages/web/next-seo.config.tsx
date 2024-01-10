@@ -12,7 +12,7 @@ const SEO_VALUES = {
 };
 
 interface SEOProps {
-  poolId?: string;
+  poolId: string; // Make poolId required
 }
 
 const SEO: React.FC<SEOProps> = ({ poolId }) => {
@@ -25,9 +25,9 @@ const SEO: React.FC<SEOProps> = ({ poolId }) => {
   }, []);
 
   const config: DefaultSeoProps = {
-    title: poolId ? `Pool #${poolId}` : t("seo.default.title"),
-    description: poolId ? `Information about pool #${poolId}` : t("seo.default.description"),
-    canonical: poolId ? `${SEO_VALUES.SITE_URL}pool/${poolId}` : SEO_VALUES.SITE_URL,
+    title: `Pool #${poolId}`,
+    description: `Information about pool #${poolId}`,
+    canonical: `${SEO_VALUES.SITE_URL}pool/${poolId}`,
     additionalLinkTags: [
       {
         rel: "icon",
@@ -51,9 +51,9 @@ const SEO: React.FC<SEOProps> = ({ poolId }) => {
     ],
     openGraph: {
       type: "website",
-      url: poolId ? `${SEO_VALUES.SITE_URL}pool/${poolId}` : SEO_VALUES.SITE_URL,
-      title: poolId ? `Pool #${poolId}` : t("seo.default.title"),
-      description: poolId ? `Information about pool #${poolId}` : t("seo.default.description"),
+      url: `${SEO_VALUES.SITE_URL}pool/${poolId}`,
+      title: `Pool #${poolId}`,
+      description: `Information about pool #${poolId}`,
       images: [
         {
           url: SEO_VALUES.IMAGE_PREVIEW,
