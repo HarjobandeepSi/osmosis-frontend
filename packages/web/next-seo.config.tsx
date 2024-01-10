@@ -11,7 +11,11 @@ const SEO_VALUES = {
   FAVICON: "/favicon.ico",
 };
 
-const SEO: React.FC = () => {
+interface SEOProps {
+  poolId?: string;
+}
+
+const SEO: React.FC<SEOProps> = ({ poolId }) => {
   const { t } = useTranslation();
 
   const [shortcutIcon, setShortcutIcon] = useState<string>("");
@@ -21,9 +25,9 @@ const SEO: React.FC = () => {
   }, []);
 
   const config: DefaultSeoProps = {
-    title: t("seo.default.title"),
-    description: t("seo.default.description"),
-    canonical: SEO_VALUES.SITE_URL,
+    title: poolId ? `Pool #${poolId}` : t("seo.default.title"),
+    description: poolId ? `Information about pool #${poolId}` : t("seo.default.description"),
+    canonical: poolId ? `${SEO_VALUES.SITE_URL}pool/${poolId}` : SEO_VALUES.SITE_URL,
     additionalLinkTags: [
       {
         rel: "icon",
@@ -47,9 +51,9 @@ const SEO: React.FC = () => {
     ],
     openGraph: {
       type: "website",
-      url: SEO_VALUES.SITE_URL,
-      title: t("seo.default.title"),
-      description: t("seo.default.description"),
+      url: poolId ? `${SEO_VALUES.SITE_URL}pool/${poolId}` : SEO_VALUES.SITE_URL,
+      title: poolId ? `Pool #${poolId}` : t("seo.default.title"),
+      description: poolId ? `Information about pool #${poolId}` : t("seo.default.description"),
       images: [
         {
           url: SEO_VALUES.IMAGE_PREVIEW,
