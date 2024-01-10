@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { DefaultSeo, DefaultSeoProps } from "next-seo";
 import { useEffect, useState } from "react";
 
@@ -11,11 +12,7 @@ const SEO_VALUES = {
   FAVICON: "/favicon.ico",
 };
 
-interface SEOProps {
-  poolId: string; // Make poolId required
-}
-
-const SEO: React.FC<SEOProps> = ({ poolId }) => {
+const SEO: React.FC<{ poolNumber: number }> = ({ poolNumber }) => {
   const { t } = useTranslation();
 
   const [shortcutIcon, setShortcutIcon] = useState<string>("");
@@ -25,9 +22,9 @@ const SEO: React.FC<SEOProps> = ({ poolId }) => {
   }, []);
 
   const config: DefaultSeoProps = {
-    title: `Pool #${poolId}`,
-    description: `Information about pool #${poolId}`,
-    canonical: `${SEO_VALUES.SITE_URL}pool/${poolId}`,
+    title: t("seo.default.title"),
+    description: t("seo.default.description"),
+    canonical: SEO_VALUES.SITE_URL,
     additionalLinkTags: [
       {
         rel: "icon",
@@ -51,9 +48,9 @@ const SEO: React.FC<SEOProps> = ({ poolId }) => {
     ],
     openGraph: {
       type: "website",
-      url: `${SEO_VALUES.SITE_URL}pool/${poolId}`,
-      title: `Pool #${poolId}`,
-      description: `Information about pool #${poolId}`,
+      url: SEO_VALUES.SITE_URL,
+      title: `Pool #${poolNumber}`, // Dynamic Open Graph title
+      description: t("seo.default.description"),
       images: [
         {
           url: SEO_VALUES.IMAGE_PREVIEW,
@@ -72,6 +69,16 @@ const SEO: React.FC<SEOProps> = ({ poolId }) => {
   };
 
   return <DefaultSeo {...config} />;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const poolNumber = await fetchPoolNumber(context.params.id); // Replace this with your actual data fetching logic
+
+  return {
+    props: {
+      poolNumber,
+    },
+  };
 };
 
 export default SEO;
